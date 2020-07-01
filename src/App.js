@@ -37,33 +37,43 @@ class Odometer extends React.Component{
     constructor(){
         super();
         this.state = {
-            miles : '0'.padStart(4,0)
+            // miles : '0'.padStart(4,0)
+            miles : 0
         }
     }
 
-    changeMile(change){
-        let newMile = parseInt(this.state.miles);
-        let tempCount= 0;
+    downHandler(){
+        let miles = this.state.miles -1;
 
-        if ((newMile + change) > 9999){
-            tempCount = ((newMile + change) - 9999)
-        }else{
-            tempCount = (newMile + change)
+        if (miles < 0){
+            miles = 0;
         }
-        
+
         this.setState({
-            miles : String(tempCount).padStart(4,0)
+            miles // : miles
+        })
+    }
+
+    changeMile(change){
+        let miles = this.state.miles + change;  //9999+9 = 10,009
+
+        if (miles>=10000){
+            miles = miles % 10000;          // 10,009 mod 10,000 = 9
+        }
+
+        this.setState({
+            miles // : miles
         })
     }
 
     render(){
         return (
             <>
-            <button onClick={() => this.changeMile('1')}>1</button>
-            <button onClick={() => this.changeMile('10')}>10</button>
-            <button onClick={() => this.changeMile('100')}>100</button>
-            <button onClick={() => this.changeMile('1000')}>1000</button>
-            <h2>miles on Odometer: {this.state.miles}</h2>
+            <button onClick={() => this.changeMile(1)}>1</button>
+            <button onClick={() => this.changeMile(10)}>10</button>
+            <button onClick={() => this.changeMile(100)}>100</button>
+            <button onClick={() => this.changeMile(1000)}>1000</button>
+            <h2>miles on Odometer: {String(this.state.miles).padStart(4,"0")}</h2>
             </>
         )
     }
